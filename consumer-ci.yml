@@ -1,0 +1,39 @@
+name: CI
+
+# ──────────────────────────────────────────────────────────────────
+#  SMSDAO Consumer Repo Workflow
+#  This is the ONLY workflow file needed in this repository.
+#  All logic lives in SMSDAO/platform — no duplication across repos.
+# ──────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: "Override pipeline phase"
+        type: choice
+        default: Full
+        options: [Build, Test, Deploy, Full, Heal, ValidateEnv, Policy]
+      env:
+        description: "Override environment"
+        type: choice
+        default: Dev
+        options: [Dev, Staging, Prod]
+      dry_run:
+        description: "Dry run mode"
+        type: boolean
+        default: false
+
+jobs:
+  pipeline:
+    uses: SMSDAO/platform/.github/workflows/smart-pipeline.yml@v1
+    with:
+      phase:   ${{ inputs.phase || 'Full' }}
+      env:     ${{ inputs.env   || '' }}
+      dry_run: ${{ inputs.dry_run || false }}
+    secrets: inherit
