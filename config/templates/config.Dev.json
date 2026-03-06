@@ -1,0 +1,16 @@
+{
+  "_comment": "SMSDAO Platform — Development environment config. Secrets are NEVER stored here; inject via GitHub Secrets → CustomArgs.",
+  "environment": "Dev",
+  "logLevel": "Debug",
+  "dryRunDefault": false,
+  "testVerbosity": "Normal",
+  "testPath": "./tests",
+  "buildOutput": "./dist",
+  "namespace": "dev",
+  "manifest": "./k8s/Dev",
+  "deployment": "app-dev",
+  "imageTag": "dev-latest",
+  "vercelEnv": "preview",
+  "azureResourceGroup": "smsdao-dev",
+  "awsRegion": "us-east-1"
+}

@@ -1,0 +1,16 @@
+{
+  "_comment": "SMSDAO Platform — Staging environment config. Secrets are NEVER stored here; inject via GitHub Secrets → CustomArgs.",
+  "environment": "Staging",
+  "logLevel": "Info",
+  "dryRunDefault": false,
+  "testVerbosity": "Normal",
+  "testPath": "./tests",
+  "buildOutput": "./dist",
+  "namespace": "staging",
+  "manifest": "./k8s/Staging",
+  "deployment": "app-staging",
+  "imageTag": "staging-latest",
+  "vercelEnv": "preview",
+  "azureResourceGroup": "smsdao-staging",
+  "awsRegion": "us-east-1"
+}

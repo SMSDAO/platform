@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SMSDAO Platform Config Schema",
+  "description": "Validates config.{Dev,Staging,Prod}.json files. Secrets must never appear as values.",
+  "type": "object",
+  "properties": {
+    "_comment":             { "type": "string" },
+    "environment":          { "type": "string", "enum": ["Dev", "Staging", "Prod"] },
+    "logLevel":             { "type": "string", "enum": ["Debug", "Info", "Warn", "Error"] },
+    "dryRunDefault":        { "type": "boolean" },
+    "testVerbosity":        { "type": "string", "enum": ["Minimal", "Normal", "Detailed", "Diagnostic"] },
+    "testPath":             { "type": "string" },
+    "buildOutput":          { "type": "string" },
+    "namespace":            { "type": "string" },
+    "manifest":             { "type": "string" },
+    "deployment":           { "type": "string" },
+    "imageTag":             { "type": "string" },
+    "vercelEnv":            { "type": "string", "enum": ["production", "preview"] },
+    "azureResourceGroup":   { "type": "string" },
+    "awsRegion":            { "type": "string" }
+  },
+  "required": ["environment"],
+  "additionalProperties": true,
+  "not": {
+    "anyOf": [
+      { "required": ["password"] },
+      { "required": ["secret"] },
+      { "required": ["privateKey"] },
+      { "required": ["apiKey"] },
+      { "required": ["token"] },
+      { "required": ["credential"] }
+    ]
+  }
+}
