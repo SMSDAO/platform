@@ -53,7 +53,7 @@ Set the `DEPLOY_PROVIDER` repository variable in GitHub to one of:
 ### Optional Config
 ```json
 {
-  "azureResourceGroup": "my-rg-prod",
+  "resourceGroup": "my-rg-prod",
   "deployment": "my-app"
 }
 ```
