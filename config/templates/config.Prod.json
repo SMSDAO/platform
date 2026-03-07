@@ -8,9 +8,9 @@
   "buildOutput": "./dist",
   "namespace": "prod",
   "manifest": "./k8s/Prod",
-  "deployment": "app",
+  "appName": "app",
   "imageTag": "latest",
   "vercelEnv": "production",
-  "azureResourceGroup": "smsdao-prod",
+  "resourceGroup": "smsdao-prod",
   "awsRegion": "us-east-1"
 }
