@@ -8,9 +8,9 @@
   "buildOutput": "./dist",
   "namespace": "dev",
   "manifest": "./k8s/Dev",
-  "deployment": "app-dev",
+  "appName": "app-dev",
   "imageTag": "dev-latest",
   "vercelEnv": "preview",
-  "azureResourceGroup": "smsdao-dev",
+  "resourceGroup": "smsdao-dev",
   "awsRegion": "us-east-1"
 }
