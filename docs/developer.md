@@ -118,7 +118,7 @@ Invoke-Pester -Configuration $cfg
 
 ## Code Style
 
-- **Strict mode**: All modules use `Set-StrictMode -Version Latest`
+- **Strict mode**: Entry scripts set `Set-StrictMode -Version Latest`; new or updated modules should do the same
 - **Error handling**: `$ErrorActionPreference = "Stop"` in entry points
 - **Logging**: Use `Write-Info`, `Write-OK`, `Write-Fail` — never `Write-Host` directly in phase modules
 - **DryRun**: Every side effect must be guarded by `if (-not $IsDryRun)` with a `Write-Dry` counterpart
