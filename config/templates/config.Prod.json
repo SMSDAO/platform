@@ -1,0 +1,16 @@
+{
+  "_comment": "SMSDAO Platform — Production environment config. Secrets are NEVER stored here; inject via GitHub Secrets → CustomArgs.",
+  "environment": "Prod",
+  "logLevel": "Info",
+  "dryRunDefault": false,
+  "testVerbosity": "Minimal",
+  "testPath": "./tests",
+  "buildOutput": "./dist",
+  "namespace": "prod",
+  "manifest": "./k8s/Prod",
+  "appName": "app",
+  "imageTag": "latest",
+  "vercelEnv": "production",
+  "resourceGroup": "smsdao-prod",
+  "awsRegion": "us-east-1"
+}
