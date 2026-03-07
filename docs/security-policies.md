@@ -93,15 +93,15 @@ Supported values: `k8s`, `azure`, `aws`, `vercel`, `generic`
 
 ## Security Score Calculation
 
-The security score (0–100) is computed as:
+The security score is a normalized value between 0 and 100 derived from the outcome of all evaluated policy rules.
 
-```
-score = 100 - (critical_violations × 20) - (warnings × 5)
-score = max(0, score)
-```
+At a high level:
 
-A score of 80+ is required for production deployments.
+- The base score reflects the ratio of passed checks relative to the total evaluated checks.
+- Each warning applies a small penalty (0.5 points per warning) to the base score.
+- The final score is clamped to the range 0–100.
 
+The policy engine does **not** enforce a hard production threshold in code. Consumers (e.g., CI/CD workflows) should enforce any required threshold explicitly; as guidance, treating scores below 80 as non‑production‑ready is recommended.
 ---
 
 ## Secret Handling Policy
