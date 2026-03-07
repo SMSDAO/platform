@@ -28,7 +28,7 @@ Blocked triggers:
 
 ### Rule 2: Unapproved GitHub Actions
 
-**Severity**: Critical  
+**Severity**: Warn  
 **Checks**: All `uses:` entries in workflow files against the approved allowlist.
 
 **Approved Actions**:
