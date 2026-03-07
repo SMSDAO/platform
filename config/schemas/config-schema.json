@@ -21,14 +21,9 @@
   },
   "required": ["environment"],
   "additionalProperties": true,
-  "not": {
-    "anyOf": [
-      { "required": ["password"] },
-      { "required": ["secret"] },
-      { "required": ["privateKey"] },
-      { "required": ["apiKey"] },
-      { "required": ["token"] },
-      { "required": ["credential"] }
-    ]
+  "propertyNames": {
+    "not": {
+      "pattern": "(password|secret|private.?key|api[_-]?key|token|credential|access.?key)"
+    }
   }
 }
