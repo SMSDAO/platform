@@ -114,10 +114,10 @@ Set the `DEPLOY_PROVIDER` repository variable in GitHub to one of:
 
 ## Generic
 
-The `generic` provider runs `./scripts/deploy.sh` (or `./deploy.ps1` if present) with environment variables set.
+The `generic` provider runs `./deploy.sh` via `bash` with environment variables set.
 
 ```bash
-# scripts/deploy.sh
+# ./deploy.sh
 #!/bin/bash
 set -e
 echo "Deploying to $DEPLOY_ENV..."
