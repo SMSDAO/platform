@@ -8,9 +8,9 @@
   "buildOutput": "./dist",
   "namespace": "staging",
   "manifest": "./k8s/Staging",
-  "deployment": "app-staging",
+  "appName": "app-staging",
   "imageTag": "staging-latest",
   "vercelEnv": "preview",
-  "azureResourceGroup": "smsdao-staging",
+  "resourceGroup": "smsdao-staging",
   "awsRegion": "us-east-1"
 }
