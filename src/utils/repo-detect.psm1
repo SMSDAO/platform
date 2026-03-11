@@ -10,6 +10,8 @@
 
 using module ./logger.psm1
 
+Set-StrictMode -Version Latest
+
 # Result object returned by Invoke-RepoDetect
 class RepoProfile {
     [string]   $Type           # nextjs | node | tauri | electron | solidity | dotnet | generic
@@ -57,20 +59,26 @@ function Invoke-RepoDetect {
     if (Test-Path "./package.json") {
         $pkg = Get-Content "./package.json" -Raw | ConvertFrom-Json
 
-        $profile.HasLint      = [bool]($pkg.scripts.lint)
-        $profile.HasTypecheck = [bool]($pkg.scripts.typecheck)
-        $profile.HasTest      = [bool]($pkg.scripts.test)
-        $profile.HasBuild     = [bool]($pkg.scripts.build)
-        $profile.NodeVersion  = "$($pkg.engines.node ?? "20")"
+        $scripts = $pkg.PSObject.Properties['scripts']?.Value
+        $engines = $pkg.PSObject.Properties['engines']?.Value
+        $profile.HasLint      = $null -ne $scripts -and $null -ne $scripts.PSObject.Properties['lint']
+        $profile.HasTypecheck = $null -ne $scripts -and $null -ne $scripts.PSObject.Properties['typecheck']
+        $profile.HasTest      = $null -ne $scripts -and $null -ne $scripts.PSObject.Properties['test']
+        $profile.HasBuild     = $null -ne $scripts -and $null -ne $scripts.PSObject.Properties['build']
+        $profile.NodeVersion  = if ($null -ne $engines) { "$($engines.PSObject.Properties['node']?.Value ?? "20")" } else { "20" }
         $profile.Scripts      = @{}
-        $pkg.scripts.PSObject.Properties | ForEach-Object {
-            $profile.Scripts[$_.Name] = $_.Value
+        if ($null -ne $scripts) {
+            $scripts.PSObject.Properties | ForEach-Object {
+                $profile.Scripts[$_.Name] = $_.Value
+            }
         }
 
         # Framework detection from dependencies
         $allDeps = @()
-        if ($pkg.dependencies)    { $allDeps += $pkg.dependencies.PSObject.Properties.Name }
-        if ($pkg.devDependencies) { $allDeps += $pkg.devDependencies.PSObject.Properties.Name }
+        $deps    = $pkg.PSObject.Properties['dependencies']?.Value
+        $devDeps = $pkg.PSObject.Properties['devDependencies']?.Value
+        if ($deps)    { $allDeps += $deps.PSObject.Properties.Name }
+        if ($devDeps) { $allDeps += $devDeps.PSObject.Properties.Name }
 
         $frameworkMap = @{
             "react"   = "React"

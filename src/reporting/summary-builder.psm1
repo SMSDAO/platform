@@ -10,6 +10,8 @@
 using module ../utils/logger.psm1
 using module ./pr-comment.psm1
 
+Set-StrictMode -Version Latest
+
 # ── Phase result accumulator ─────────────────────────────────────
 $script:PhaseResults = [ordered]@{}
 $script:RunStart     = Get-Date

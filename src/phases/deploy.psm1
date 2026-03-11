@@ -13,6 +13,8 @@ using module ../utils/json-tools.psm1
 using module ../reporting/pr-comment.psm1
 using module ../providers/providers.psm1
 
+Set-StrictMode -Version Latest
+
 function Invoke-DeployPhase {
     param(
         [Parameter(Mandatory=$true)]

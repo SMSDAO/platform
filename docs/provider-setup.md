@@ -54,7 +54,7 @@ Set the `DEPLOY_PROVIDER` repository variable in GitHub to one of:
 ```json
 {
   "resourceGroup": "my-rg-prod",
-  "deployment": "my-app"
+  "appName": "my-app"
 }
 ```
 
@@ -101,7 +101,7 @@ Set the `DEPLOY_PROVIDER` repository variable in GitHub to one of:
 ```json
 {
   "vercelEnv": "production",
-  "project": "my-app"
+  "vercelProjectId": "my-app"
 }
 ```
 

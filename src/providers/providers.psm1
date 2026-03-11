@@ -12,6 +12,8 @@
 using module ../utils/logger.psm1
 using module ../utils/json-tools.psm1
 
+Set-StrictMode -Version Latest
+
 function Invoke-Provider {
     <#
     .SYNOPSIS

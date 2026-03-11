@@ -12,6 +12,8 @@ using module ../utils/logger.psm1
 using module ../utils/file-scan.psm1
 using module ../reporting/pr-comment.psm1
 
+Set-StrictMode -Version Latest
+
 function Invoke-ValidateEnvPhase {
     param(
         [Parameter(Mandatory=$true)]

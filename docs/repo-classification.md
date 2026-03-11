@@ -63,7 +63,7 @@
 
 ## Security Classification
 
-- **Threat Detection**: 8 pattern categories (secrets, tokens, credentials, keys, passwords, API keys, private keys, connection strings)
+- **Threat Detection**: 9 secret patterns across 8 categories (hardcoded-password, openai-key, aws-access-key, github-pat, slack-token, private-key, api-key, hardcoded-rpc × 2)
 - **Governance**: DAO-level policy enforcement via `policy-engine.psm1`
 - **Secret Handling**: Secrets injected via GitHub Secrets → `CustomArgs`, never stored in config files
 - **Workflow Auditing**: Validates workflow permissions, unapproved Actions, branch protections

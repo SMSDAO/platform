@@ -14,6 +14,8 @@
 using module ../utils/logger.psm1
 using module ../utils/file-scan.psm1
 
+Set-StrictMode -Version Latest
+
 class PolicyViolation {
     [string]$Rule
     [string]$Severity    # critical | warn | info
@@ -122,7 +124,7 @@ function Invoke-PolicyCheck {
     # ── RULE 3: Hardcoded secrets in source ─────────────────────
     Write-Info "Policy: Scanning for hardcoded secrets..."
     $secretResults = Invoke-FilePatternScan -Patterns (Get-SecretPatterns)
-    $critSecrets   = $secretResults | Where-Object { $_.Severity -eq "critical" }
+    $critSecrets   = @($secretResults | Where-Object { $_.Severity -eq "critical" })
     foreach ($r in $critSecrets) {
         $v = [PolicyViolation]::new()
         $v.Rule        = "hardcoded-secret"
@@ -185,10 +187,10 @@ function Invoke-PolicyCheck {
     # ── RULE 5: Deploy provider consistency ─────────────────────
     Write-Info "Policy: Checking deploy provider consistency..."
     $configFiles = Get-ChildItem -Filter "config.*.json" -Recurse -ErrorAction SilentlyContinue
-    $providers   = $configFiles | ForEach-Object {
+    $providers   = @($configFiles | ForEach-Object {
         $cfg = Get-Content $_.FullName | ConvertFrom-Json -ErrorAction SilentlyContinue
-        $cfg.provider
-    } | Where-Object { $_ } | Sort-Object -Unique
+        $cfg.PSObject.Properties['provider']?.Value
+    } | Where-Object { $_ } | Sort-Object -Unique)
 
     if ($providers.Count -gt 1) {
         $w = [PolicyViolation]::new()
@@ -235,8 +237,8 @@ function Get-SecurityScore {
 
     $rules       = $PolicyResult.Score.Count
     if ($rules -eq 0) { return 0 }
-    $passes      = ($PolicyResult.Score.Values | Where-Object { $_ -eq "pass" }).Count
-    $warnPenalty = ($PolicyResult.Score.Values | Where-Object { $_ -eq "warn" }).Count * 0.5
+    $passes      = @($PolicyResult.Score.Values | Where-Object { $_ -eq "pass" }).Count
+    $warnPenalty = @($PolicyResult.Score.Values | Where-Object { $_ -eq "warn" }).Count * 0.5
     $score       = [math]::Round((($passes - $warnPenalty) / $rules) * 100)
     return [math]::Max(0, $score)
 }

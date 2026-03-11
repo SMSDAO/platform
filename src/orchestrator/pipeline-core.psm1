@@ -21,6 +21,8 @@ using module ../phases/heal.psm1
 using module ../phases/validate-env.psm1
 using module ../security/policy-engine.psm1
 
+Set-StrictMode -Version Latest
+
 function Invoke-Pipeline {
     <#
     .SYNOPSIS

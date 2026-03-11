@@ -16,7 +16,8 @@
     "deployment":           { "type": "string" },
     "imageTag":             { "type": "string" },
     "vercelEnv":            { "type": "string", "enum": ["production", "preview"] },
-    "azureResourceGroup":   { "type": "string" },
+    "resourceGroup":        { "type": "string" },
+    "appName":              { "type": "string" },
     "awsRegion":            { "type": "string" }
   },
   "required": ["environment"],
