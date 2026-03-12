@@ -65,7 +65,7 @@ SMSDAO/platform
 ### Rule 4: Deploy Provider Consistency
 
 **Severity**: Warn  
-**Checks**: `DEPLOY_PROVIDER` variable matches a supported provider name.
+**Checks**: `provider` field in `config.*.json` files matches a supported provider name.
 
 Supported values: `k8s`, `azure`, `aws`, `vercel`, `generic`
 
@@ -117,5 +117,5 @@ The policy engine does **not** enforce a hard production threshold in code. Cons
 
 1. Create a new function `Test-<RuleName>` in `src/security/policy-engine.psm1`
 2. Add the rule to the `$score` hashtable in `Invoke-PolicyCheck`
-3. Add a unit test in `tests/unit/test-policy-engine.ps1`
+3. Add a unit test in `tests/unit/policy-engine.Tests.ps1`
 4. Document the rule in this file

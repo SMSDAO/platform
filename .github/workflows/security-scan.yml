@@ -73,7 +73,7 @@ jobs:
             -Patterns $patterns `
             -Exclude @("node_modules","dist",".git","TestResults","*.min.js")
 
-          $critical = $results | Where-Object { $_.Severity -eq "critical" }
+          $critical = @($results | Where-Object { $_.Severity -eq "critical" })
           if ($critical.Count -gt 0) {
             Write-Host "CRITICAL secret findings:" -ForegroundColor Red
             $critical | ForEach-Object {
@@ -83,7 +83,7 @@ jobs:
             exit 1
           }
 
-          $warn = $results | Where-Object { $_.Severity -eq "warn" }
+          $warn = @($results | Where-Object { $_.Severity -eq "warn" })
           if ($warn.Count -gt 0) {
             Write-Host "Warnings ($($warn.Count)):" -ForegroundColor Yellow
             $warn | ForEach-Object {

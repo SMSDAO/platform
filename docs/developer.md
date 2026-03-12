@@ -79,7 +79,7 @@ scripts/                        ← Developer tooling
 2. Add `using module ../phases/my-phase.psm1` to `src/orchestrator/pipeline-core.psm1`
 3. Add a `case` to the `switch ($Phase)` block in `Invoke-Pipeline`
 4. Add `"MyPhase"` to the `ValidateSet` in both `pipeline-core.psm1` and `bin/pipeline.ps1`
-5. Write tests in `tests/unit/test-my-phase.ps1`
+5. Write tests in `tests/unit/my-phase.Tests.ps1`
 
 ---
 
@@ -90,7 +90,7 @@ scripts/                        ← Developer tooling
 3. Add a case to the `switch ($Name)` block
 4. Add to the approved providers list in `docs/provider-setup.md`
 5. Add to `organization-map.json` → `supported_providers`
-6. Write tests in `tests/unit/test-providers.ps1`
+6. Write tests in `tests/unit/providers.Tests.ps1`
 
 ---
 

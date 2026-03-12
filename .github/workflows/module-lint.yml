@@ -43,8 +43,8 @@ jobs:
             -ExcludeRule PSAvoidUsingWriteHost,PSUseSingularNouns `
             -ReportSummary
 
-          $errors   = $results | Where-Object Severity -eq Error
-          $warnings = $results | Where-Object Severity -eq Warning
+          $errors   = @($results | Where-Object Severity -eq Error)
+          $warnings = @($results | Where-Object Severity -eq Warning)
 
           Write-Host "PSScriptAnalyzer: $($errors.Count) error(s), $($warnings.Count) warning(s)"
 

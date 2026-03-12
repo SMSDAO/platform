@@ -24,7 +24,7 @@
   "additionalProperties": true,
   "propertyNames": {
     "not": {
-      "pattern": "(password|secret|private.?key|api[_-]?key|token|credential|access.?key)"
+      "pattern": "([Pp]assword|[Ss]ecret|[Pp]rivate.?[Kk]ey|[Aa][Pp][Ii][_-]?[Kk]ey|[Tt]oken|[Cc]redential|[Aa]ccess.?[Kk]ey)"
     }
   }
 }
