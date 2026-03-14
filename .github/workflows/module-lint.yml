@@ -66,6 +66,7 @@ jobs:
                       Where-Object FullName -NotMatch "\.git"
           $errors = 0
           foreach ($file in $allFiles) {
+            $parseErrors = $null
             $null = [System.Management.Automation.Language.Parser]::ParseFile(
               $file.FullName, [ref]$null, [ref]$parseErrors
             )
