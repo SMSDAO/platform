@@ -18,6 +18,8 @@ using module ./build.psm1
 using module ./test.psm1
 using module ./validate-env.psm1
 
+Set-StrictMode -Version Latest
+
 function Invoke-HealPhase {
     param(
         [Parameter(Mandatory=$true)]

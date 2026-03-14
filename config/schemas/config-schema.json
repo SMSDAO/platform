@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SMSDAO Platform Config Schema",
+  "description": "Validates config.{Dev,Staging,Prod}.json files and enforces that secret-like identifiers do not appear in property names.",
+  "type": "object",
+  "properties": {
+    "_comment":             { "type": "string" },
+    "environment":          { "type": "string", "enum": ["Dev", "Staging", "Prod"] },
+    "logLevel":             { "type": "string", "enum": ["Debug", "Info", "Warn", "Error"] },
+    "dryRunDefault":        { "type": "boolean" },
+    "testVerbosity":        { "type": "string", "enum": ["Minimal", "Normal", "Detailed", "Diagnostic"] },
+    "testPath":             { "type": "string" },
+    "buildOutput":          { "type": "string" },
+    "namespace":            { "type": "string" },
+    "manifest":             { "type": "string" },
+    "deployment":           { "type": "string" },
+    "imageTag":             { "type": "string" },
+    "vercelEnv":            { "type": "string", "enum": ["production", "preview"] },
+    "resourceGroup":        { "type": "string" },
+    "appName":              { "type": "string" },
+    "awsRegion":            { "type": "string" }
+  },
+  "required": ["environment"],
+  "additionalProperties": true,
+  "propertyNames": {
+    "not": {
+      "pattern": "([Pp]assword|[Ss]ecret|[Pp]rivate.?[Kk]ey|[Aa][Pp][Ii][_-]?[Kk]ey|[Tt]oken|[Cc]redential|[Aa]ccess.?[Kk]ey)"
+    }
+  }
+}

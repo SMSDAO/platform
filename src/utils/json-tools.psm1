@@ -12,6 +12,8 @@
 
 using module ./logger.psm1
 
+Set-StrictMode -Version Latest
+
 $script:LoadedConfig = @{}
 $script:LoadedEnv    = ""
 

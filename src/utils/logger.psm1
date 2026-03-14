@@ -8,6 +8,8 @@
     and an in-memory log buffer that can be exported for metrics.
 #>
 
+Set-StrictMode -Version Latest
+
 $script:LogBuffer  = [System.Collections.Generic.List[hashtable]]::new()
 $script:JsonMode   = [bool]($env:SMSDAO_LOG_JSON -eq "true")
 $script:LogLevel   = $env:SMSDAO_LOG_LEVEL ?? "INFO"   # DEBUG | INFO | WARN | ERROR

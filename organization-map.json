@@ -1,0 +1,43 @@
+{
+  "repo": "SMSDAO/platform",
+  "purpose": "Organization-wide CI/CD Automation Platform",
+  "stack": "PowerShell + GitHub Actions + Multi-Cloud",
+  "status": "CRITICAL_INFRASTRUCTURE",
+  "security_score": "HIGH_GOVERNANCE",
+  "build_status": "PRODUCTION_READY",
+  "dependency_health": "POWERSHELL_MODULES",
+  "serves_repos": "109+",
+  "entry_point": "bin/pipeline.ps1",
+  "reusable_workflow": ".github/workflows/smart-pipeline.yml",
+  "consumer_template": "config/templates/consumer-ci.yml",
+  "modules": {
+    "orchestrator": ["src/orchestrator/pipeline-core.psm1"],
+    "phases": [
+      "src/phases/build.psm1",
+      "src/phases/test.psm1",
+      "src/phases/deploy.psm1",
+      "src/phases/heal.psm1",
+      "src/phases/validate-env.psm1"
+    ],
+    "security": ["src/security/policy-engine.psm1"],
+    "providers": ["src/providers/providers.psm1"],
+    "reporting": [
+      "src/reporting/pr-comment.psm1",
+      "src/reporting/summary-builder.psm1"
+    ],
+    "utils": [
+      "src/utils/logger.psm1",
+      "src/utils/repo-detect.psm1",
+      "src/utils/json-tools.psm1",
+      "src/utils/file-scan.psm1"
+    ]
+  },
+  "supported_repo_types": [
+    "nextjs", "node", "electron", "dotnet", "solidity", "tauri", "generic"
+  ],
+  "supported_providers": ["k8s", "azure", "aws", "vercel", "generic"],
+  "supported_environments": ["Dev", "Staging", "Prod"],
+  "pipeline_phases": [
+    "Build", "Test", "Deploy", "Full", "Heal", "DetectRepo", "ValidateEnv", "Policy"
+  ]
+}

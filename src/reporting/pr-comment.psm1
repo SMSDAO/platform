@@ -12,6 +12,8 @@
 
 using module ../utils/logger.psm1
 
+Set-StrictMode -Version Latest
+
 $BOT_TAG = "<!-- smsdao-pipeline-bot -->"
 
 # ── Comment body factory ─────────────────────────────────────────

@@ -10,6 +10,8 @@
 
 using module ./logger.psm1
 
+Set-StrictMode -Version Latest
+
 class ScanResult {
     [string]   $File
     [string]   $Pattern

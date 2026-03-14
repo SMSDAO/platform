@@ -1,0 +1,27 @@
+{
+  "name": "SMSDAO Platform DevOps",
+  "image": "mcr.microsoft.com/devcontainers/powershell:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postCreateCommand": "pwsh ./scripts/install-dependencies.ps1",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.powershell",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-json"
+      ],
+      "settings": {
+        "powershell.scriptAnalysis.enable": true,
+        "powershell.pester.useLegacyCodeLens": false,
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "remoteEnv": {
+    "POWERSHELL_TELEMETRY_OPTOUT": "1"
+  }
+}

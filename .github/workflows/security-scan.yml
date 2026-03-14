@@ -1,0 +1,120 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+  schedule:
+    # Run weekly on Monday at 08:00 UTC
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: security-scan-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  policy-engine-validation:
+    name: Policy Engine Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate policy engine loads correctly
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Import-Module ./src/utils/logger.psm1 -Force
+          Import-Module ./src/utils/file-scan.psm1 -Force
+          Import-Module ./src/security/policy-engine.psm1 -Force
+          Write-Host "Policy engine loaded successfully."
+
+      - name: Run policy check on platform itself
+        shell: pwsh
+        run: |
+          Import-Module ./src/utils/logger.psm1 -Force
+          Import-Module ./src/utils/file-scan.psm1 -Force
+          Import-Module ./src/security/policy-engine.psm1 -Force
+
+          $result = Invoke-PolicyCheck -Env Dev -Token '${{ github.token }}' -Repo '${{ github.repository }}'
+          Write-Host "Policy check: Passed=$($result.Passed)"
+          Write-Host "Violations: $($result.Violations.Count)"
+          Write-Host "Warnings: $($result.Warnings.Count)"
+
+          $score = Get-SecurityScore -PolicyResult $result
+          Write-Host "Security score: $score/100"
+
+          if ($result.Violations | Where-Object { $_.Severity -eq "critical" }) {
+            Write-Error "Critical policy violations found!"
+            exit 1
+          }
+
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for hardcoded secrets
+        shell: pwsh
+        run: |
+          Import-Module ./src/utils/logger.psm1 -Force
+          Import-Module ./src/utils/file-scan.psm1 -Force
+
+          $patterns = Get-SecretPatterns
+          $results  = Invoke-FilePatternScan `
+            -Paths @(".") `
+            -Include @("*.psm1","*.ps1","*.yml","*.yaml","*.json") `
+            -Patterns $patterns `
+            -Exclude @("node_modules","dist",".git","TestResults","*.min.js")
+
+          $critical = @($results | Where-Object { $_.Severity -eq "critical" })
+          if ($critical.Count -gt 0) {
+            Write-Host "CRITICAL secret findings:" -ForegroundColor Red
+            $critical | ForEach-Object {
+              Write-Host "  $($_.File):$($_.LineNumber) [$($_.Category)] $($_.Match)"
+            }
+            Write-Error "$($critical.Count) critical secret(s) found. Remove before merging."
+            exit 1
+          }
+
+          $warn = @($results | Where-Object { $_.Severity -eq "warn" })
+          if ($warn.Count -gt 0) {
+            Write-Host "Warnings ($($warn.Count)):" -ForegroundColor Yellow
+            $warn | ForEach-Object {
+              Write-Host "  $($_.File):$($_.LineNumber) [$($_.Category)]"
+            }
+          }
+
+          Write-Host "Secret scan complete: 0 critical, $($warn.Count) warning(s)."
+
+  workflow-security-audit:
+    name: Workflow Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit GitHub Actions workflow permissions
+        shell: pwsh
+        run: |
+          $wfFiles = Get-ChildItem ".github/workflows" -Filter "*.yml" -ErrorAction SilentlyContinue
+          $issues  = 0
+          foreach ($wf in $wfFiles) {
+            $content = Get-Content $wf.FullName -Raw
+            # Warn on write-all permissions
+            if ($content -match 'permissions:\s*write-all') {
+              Write-Host "WARNING: $($wf.Name) uses write-all permissions" -ForegroundColor Yellow
+              $issues++
+            }
+            # Warn on pull_request_target without condition
+            if ($content -match 'pull_request_target' -and $content -notmatch 'if:') {
+              Write-Host "WARNING: $($wf.Name) uses pull_request_target without condition guard" -ForegroundColor Yellow
+              $issues++
+            }
+          }
+          Write-Host "Workflow audit: $($wfFiles.Count) files, $issues concern(s)."

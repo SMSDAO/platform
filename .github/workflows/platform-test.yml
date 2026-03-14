@@ -1,0 +1,124 @@
+name: Platform Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+concurrency:
+  group: platform-test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pester
+        shell: pwsh
+        run: |
+          Install-Module Pester -Force -Scope CurrentUser -MinimumVersion 5.5.0
+          Import-Module Pester
+
+      - name: Run unit tests
+        shell: pwsh
+        run: |
+          $cfg = New-PesterConfiguration
+          $cfg.Run.Path         = "./tests/unit"
+          $cfg.Run.PassThru     = $true
+          $cfg.Output.Verbosity = "Normal"
+          $cfg.TestResult.Enabled    = $true
+          $cfg.TestResult.OutputPath = "./TestResults/unit.xml"
+          $cfg.TestResult.OutputFormat = "NUnitXml"
+
+          $result = Invoke-Pester -Configuration $cfg
+          if ($result.FailedCount -gt 0) {
+            Write-Error "$($result.FailedCount) unit test(s) failed."
+            exit 1
+          }
+          Write-Host "Unit tests: $($result.PassedCount) passed."
+
+      - name: Upload unit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results-${{ github.sha }}
+          path: TestResults/unit.xml
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pester
+        shell: pwsh
+        run: |
+          Install-Module Pester -Force -Scope CurrentUser -MinimumVersion 5.5.0
+          Import-Module Pester
+
+      - name: Run integration tests
+        shell: pwsh
+        run: |
+          $cfg = New-PesterConfiguration
+          $cfg.Run.Path         = "./tests/integration"
+          $cfg.Run.PassThru     = $true
+          $cfg.Output.Verbosity = "Normal"
+          $cfg.TestResult.Enabled      = $true
+          $cfg.TestResult.OutputPath   = "./TestResults/integration.xml"
+          $cfg.TestResult.OutputFormat = "NUnitXml"
+
+          $result = Invoke-Pester -Configuration $cfg
+          if ($result.FailedCount -gt 0) {
+            Write-Error "$($result.FailedCount) integration test(s) failed."
+            exit 1
+          }
+          Write-Host "Integration tests: $($result.PassedCount) passed."
+
+      - name: Upload integration test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results-${{ github.sha }}
+          path: TestResults/integration.xml
+
+  module-load-check:
+    name: Module Load Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify all modules load without errors
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $modules = @(
+            "src/utils/logger.psm1",
+            "src/utils/file-scan.psm1",
+            "src/utils/json-tools.psm1",
+            "src/utils/repo-detect.psm1",
+            "src/reporting/pr-comment.psm1",
+            "src/reporting/summary-builder.psm1",
+            "src/phases/build.psm1",
+            "src/phases/test.psm1",
+            "src/phases/deploy.psm1",
+            "src/phases/heal.psm1",
+            "src/phases/validate-env.psm1",
+            "src/providers/providers.psm1",
+            "src/security/policy-engine.psm1",
+            "src/orchestrator/pipeline-core.psm1"
+          )
+          foreach ($mod in $modules) {
+            Import-Module "./$mod" -Force -ErrorAction Stop
+            Write-Host "OK: $mod"
+          }
+          Write-Host "`nAll $($modules.Count) modules loaded successfully."
