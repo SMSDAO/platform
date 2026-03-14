@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "SMSDAO Platform Config Schema",
-  "description": "Validates config.{Dev,Staging,Prod}.json files. Secrets must never appear as values.",
+  "description": "Validates config.{Dev,Staging,Prod}.json files and enforces that secret-like identifiers do not appear in property names.",
   "type": "object",
   "properties": {
     "_comment":             { "type": "string" },
