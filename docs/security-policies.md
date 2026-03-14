@@ -50,28 +50,7 @@ SMSDAO/platform
 
 ---
 
-### Rule 3: Branch Protection
-
-**Severity**: Warn  
-**Checks**: GitHub API to verify `main` branch has protection enabled.
-
-**Required protections**:
-- Required PR reviews before merging
-- Status checks must pass
-- No direct pushes to `main`
-
----
-
-### Rule 4: Deploy Provider Consistency
-
-**Severity**: Warn  
-**Checks**: `provider` field in `config.*.json` files matches a supported provider name.
-
-Supported values: `k8s`, `azure`, `aws`, `vercel`, `generic`
-
----
-
-### Rule 5: Secret Pattern Detection
+### Rule 3: Secret Pattern Detection
 
 **Severity**: Critical  
 **Checks**: Source files for 9 categories of hardcoded secrets.
@@ -88,6 +67,27 @@ Supported values: `k8s`, `azure`, `aws`, `vercel`, `generic`
 | `hardcoded-rpc` | `mainnet.infura.io` URLs |
 
 **Remediation**: Move secrets to GitHub Secrets and inject via `CustomArgs`.
+
+---
+
+### Rule 4: Branch Protection
+
+**Severity**: Warn  
+**Checks**: GitHub API to verify `main` branch has protection enabled.
+
+**Required protections**:
+- Required PR reviews before merging
+- Status checks must pass
+- No direct pushes to `main`
+
+---
+
+### Rule 5: Deploy Provider Consistency
+
+**Severity**: Warn  
+**Checks**: `provider` field in `config.*.json` files matches a supported provider name.
+
+Supported values: `k8s`, `azure`, `aws`, `vercel`, `generic`
 
 ---
 
