@@ -41,7 +41,7 @@ jobs:
           Import-Module ./src/utils/file-scan.psm1 -Force
           Import-Module ./src/security/policy-engine.psm1 -Force
 
-          $result = Invoke-PolicyCheck -Env Dev
+          $result = Invoke-PolicyCheck -Env Dev -Token '${{ github.token }}' -Repo '${{ github.repository }}'
           Write-Host "Policy check: Passed=$($result.Passed)"
           Write-Host "Violations: $($result.Violations.Count)"
           Write-Host "Warnings: $($result.Warnings.Count)"
