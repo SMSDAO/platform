@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { Navbar } from '@/components/layout/Navbar'
 import { Activity, GitBranch, CheckCircle, Clock, TrendingUp, Zap } from 'lucide-react'
 
@@ -111,7 +112,7 @@ export default async function DashboardPage() {
         {(session.user?.role === 'admin' || session.user?.role === 'developer') && (
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {session.user?.role === 'admin' && (
-              <a href="/dashboard/admin" className="glass rounded-2xl p-5 border border-neon-purple/20 hover:border-neon-purple/40 hover:glow-purple transition-all">
+              <Link href="/dashboard/admin" className="glass rounded-2xl p-5 border border-neon-purple/20 hover:border-neon-purple/40 hover:glow-purple transition-all">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-neon-purple/10 flex items-center justify-center">
                     <Zap className="w-5 h-5 text-neon-purple" />
@@ -121,10 +122,10 @@ export default async function DashboardPage() {
                     <div className="text-xs text-slate-400">Manage users &amp; settings</div>
                   </div>
                 </div>
-              </a>
+              </Link>
             )}
             {session.user?.role === 'developer' && (
-              <a href="/dashboard/dev" className="glass rounded-2xl p-5 border border-neon-green/20 hover:border-neon-green/40 hover:glow-green transition-all">
+              <Link href="/dashboard/dev" className="glass rounded-2xl p-5 border border-neon-green/20 hover:border-neon-green/40 hover:glow-green transition-all">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-neon-green/10 flex items-center justify-center">
                     <Activity className="w-5 h-5 text-neon-green" />
@@ -134,7 +135,7 @@ export default async function DashboardPage() {
                     <div className="text-xs text-slate-400">Advanced developer tools</div>
                   </div>
                 </div>
-              </a>
+              </Link>
             )}
           </div>
         )}
