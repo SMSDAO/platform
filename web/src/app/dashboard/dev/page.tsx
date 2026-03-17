@@ -126,10 +126,10 @@ export default async function DevPage() {
             </div>
             <div className="space-y-2">
               {[
-                { name: 'next', version: '14.2.3', status: 'up-to-date' },
-                { name: 'react', version: '18.3.1', status: 'up-to-date' },
+                { name: 'next', version: '15.2.9', status: 'up-to-date' },
+                { name: 'react', version: '18.3.0', status: 'up-to-date' },
                 { name: 'prisma', version: '5.14.0', status: 'up-to-date' },
-                { name: 'next-auth', version: '4.24.7', status: 'up-to-date' },
+                { name: 'next-auth', version: '4.24.0', status: 'up-to-date' },
               ].map((dep, i) => (
                 <div key={i} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
                   <span className="text-sm text-slate-300">{dep.name}</span>

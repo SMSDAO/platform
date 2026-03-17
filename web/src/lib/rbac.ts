@@ -18,7 +18,10 @@ export function hasPermission(userRole: string, requiredRoles: Role[]): boolean 
 }
 
 export function canAccessRoute(userRole: string, route: string): boolean {
-  const permissions = ROUTE_PERMISSIONS[route]
-  if (!permissions) return true
-  return hasPermission(userRole, permissions)
+  // Find the most specific (longest) matching route prefix
+  const matchedRoute = Object.keys(ROUTE_PERMISSIONS)
+    .filter((r) => route === r || route.startsWith(r + '/'))
+    .sort((a, b) => b.length - a.length)[0]
+  if (!matchedRoute) return true
+  return hasPermission(userRole, ROUTE_PERMISSIONS[matchedRoute])
 }

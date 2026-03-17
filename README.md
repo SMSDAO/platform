@@ -11,7 +11,7 @@
 
 ## 🌟 Flash Glow Neo Web App
 
-A full-stack, mobile-optimized web dashboard built with **Next.js 14**, **Tailwind CSS**, and a custom **Flash Glow Neo** design system — featuring glassmorphism cards, neon glow effects, and role-based access control.
+A full-stack, mobile-optimized web dashboard built with **Next.js 15**, **Tailwind CSS**, and a custom **Flash Glow Neo** design system — featuring glassmorphism cards, neon glow effects, and role-based access control.
 
 ### UI Screenshots
 
@@ -43,7 +43,7 @@ npm run dev                 # http://localhost:3000
 | Email | Password | Role |
 |---|---|---|
 | `admin@admin.com` | `admin123` | Admin |
-| `dev@admin.com` | `dev123` | Developer |
+| `dev@admin.com` | `developer123` | Developer |
 
 ### One-Click Vercel Deploy
 
@@ -95,7 +95,7 @@ All custom tokens are declared in `web/tailwind.config.js` under `theme.extend.c
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 14 (App Router) |
+| Framework | Next.js 15 (App Router) |
 | Styling | Tailwind CSS v3 + custom Flash Glow Neo utilities |
 | Auth | NextAuth.js v4 (Credentials + JWT) |
 | Database | Prisma ORM + SQLite (swap to Postgres for production) |

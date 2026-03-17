@@ -22,7 +22,7 @@ async function main() {
     update: {},
     create: {
       email: 'dev@admin.com',
-      password: await bcrypt.hash('dev123', 12),
+      password: await bcrypt.hash('developer123', 12),
       name: 'Developer User',
       role: 'developer',
     },

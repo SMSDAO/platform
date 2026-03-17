@@ -1,6 +1,6 @@
 # Platform Web — Flash Glow Neo Dashboard
 
-> Full-stack Next.js 14 web application with Flash Glow Neo UI, RBAC, and Prisma.
+> Full-stack Next.js 15 web application with Flash Glow Neo UI, RBAC, and Prisma.
 
 ## Quick Start
 
@@ -17,7 +17,7 @@ npm run dev                # http://localhost:3000
 | Email | Password | Role | Access |
 |---|---|---|---|
 | `admin@admin.com` | `admin123` | Admin | Dashboard, Admin Panel, Profile |
-| `dev@admin.com` | `dev123` | Developer | All routes including Dev Panel |
+| `dev@admin.com` | `developer123` | Developer | All routes including Dev Panel |
 
 Register any new account at `/auth/register` — it defaults to the **User** role.
 
