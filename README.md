@@ -1,10 +1,135 @@
 # SMSDAO/platform
 
-> **Organization-wide CI/CD Automation Platform** — One pipeline, 109+ repos, zero duplication.
+> **Organization-wide CI/CD Automation Platform** — One pipeline, 109+ repos, zero duplication. Now with a full **Flash Glow Neo** web dashboard.
 
 [![Platform Tests](https://github.com/SMSDAO/platform/actions/workflows/platform-test.yml/badge.svg)](https://github.com/SMSDAO/platform/actions/workflows/platform-test.yml)
 [![Module Lint](https://github.com/SMSDAO/platform/actions/workflows/module-lint.yml/badge.svg)](https://github.com/SMSDAO/platform/actions/workflows/module-lint.yml)
 [![Security Scan](https://github.com/SMSDAO/platform/actions/workflows/security-scan.yml/badge.svg)](https://github.com/SMSDAO/platform/actions/workflows/security-scan.yml)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/platform&root=web)
+
+---
+
+## 🌟 Flash Glow Neo Web App
+
+A full-stack, mobile-optimized web dashboard built with **Next.js 14**, **Tailwind CSS**, and a custom **Flash Glow Neo** design system — featuring glassmorphism cards, neon glow effects, and role-based access control.
+
+### UI Screenshots
+
+| Landing Page | Register |
+|---|---|
+| ![Landing Page](https://github.com/user-attachments/assets/00c0ce16-f7ef-4c40-94b4-484c846a9e3c) | ![Register](https://github.com/user-attachments/assets/6341b175-9c20-4d85-89b3-51a43a768ab1) |
+
+| Dashboard | Admin Panel |
+|---|---|
+| ![Dashboard](https://github.com/user-attachments/assets/e24cc913-8673-4709-a584-6827227b5618) | ![Admin Panel](https://github.com/user-attachments/assets/3cfdb94a-0568-4b86-a10e-022cc678b8fb) |
+
+| Developer Panel | Profile |
+|---|---|
+| ![Developer Panel](https://github.com/user-attachments/assets/4784249c-432b-4722-b288-c38be21f101a) | ![Profile](https://github.com/user-attachments/assets/6302b6bb-300e-4ee7-8459-079a99c04223) |
+
+### Web App Quick Start
+
+```bash
+cd web
+npm install
+cp .env.example .env        # then fill in NEXTAUTH_SECRET
+npm run db:push             # initialize SQLite schema
+npm run db:seed             # create demo users
+npm run dev                 # http://localhost:3000
+```
+
+**Demo credentials:**
+
+| Email | Password | Role |
+|---|---|---|
+| `admin@admin.com` | `admin123` | Admin |
+| `dev@admin.com` | `dev123` | Developer |
+
+### One-Click Vercel Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/platform&root=web)
+
+Set these environment variables in Vercel:
+
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | `file:./dev.db` (SQLite) or a Postgres connection string |
+| `NEXTAUTH_SECRET` | Any long random string (e.g. `openssl rand -base64 32`) |
+| `NEXTAUTH_URL` | Your Vercel deployment URL, e.g. `https://your-app.vercel.app` |
+
+### Role-Based Access Control
+
+| Route | User | Admin | Developer |
+|---|---|---|---|
+| `/` | ✅ | ✅ | ✅ |
+| `/auth/login` | ✅ | ✅ | ✅ |
+| `/dashboard` | ✅ | ✅ | ✅ |
+| `/profile` | ✅ | ✅ | ✅ |
+| `/dashboard/admin` | ❌ | ✅ | ✅ |
+| `/dashboard/dev` | ❌ | ❌ | ✅ |
+
+### Flash Glow Neo Design System
+
+The `web/` app uses a custom Tailwind extension with neon utility classes:
+
+| Class | Effect |
+|---|---|
+| `.glow-cyan` | Cyan box-shadow glow (`#00d4ff`) |
+| `.glow-purple` | Purple box-shadow glow (`#a855f7`) |
+| `.glow-green` | Green box-shadow glow (`#00ff88`) |
+| `.text-glow-cyan` | Cyan text-shadow neon glow |
+| `.glass` | Glassmorphism — `backdrop-blur` + semi-transparent bg |
+| `.glass-dark` | Darker glass variant |
+| `.gradient-border` | Animated gradient border (cyan → purple → green) |
+| `.neon-grid` | Subtle dot-grid background pattern |
+
+All custom tokens are declared in `web/tailwind.config.js` under `theme.extend.colors`:
+- `neon-cyan`: `#00d4ff`
+- `neon-purple`: `#a855f7`
+- `neon-green`: `#00ff88`
+- `dark-base`: `#0a0a0f`
+- `dark-card`: `#0f0f1a`
+- `dark-border`: `#1a1a2e`
+
+### Web App Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Styling | Tailwind CSS v3 + custom Flash Glow Neo utilities |
+| Auth | NextAuth.js v4 (Credentials + JWT) |
+| Database | Prisma ORM + SQLite (swap to Postgres for production) |
+| Icons | Lucide React |
+| Animations | Framer Motion |
+| Password hashing | bcryptjs |
+
+### Web App Directory Structure
+
+```
+web/
+├── vercel.json                     # One-click Vercel deploy config
+├── prisma/
+│   ├── schema.prisma               # User model with role field
+│   └── seed.ts                     # Creates admin + developer demo users
+└── src/
+    ├── app/
+    │   ├── page.tsx                # Landing page (public)
+    │   ├── auth/login/             # Login page
+    │   ├── auth/register/          # Register page + POST /api/auth/register
+    │   ├── dashboard/              # Main dashboard (User/Admin/Dev)
+    │   ├── dashboard/admin/        # Admin panel (Admin + Dev only)
+    │   ├── dashboard/dev/          # Developer panel (Dev only)
+    │   ├── profile/                # Profile & permissions view
+    │   └── api/auth/[...nextauth]/ # NextAuth.js handler
+    ├── components/layout/
+    │   └── Navbar.tsx              # Role-aware navigation
+    └── lib/
+        ├── auth.ts                 # NextAuth options + callbacks
+        ├── prisma.ts               # Prisma client singleton
+        └── rbac.ts                 # Role/permission helpers
+```
+
+---
 
 ---
 
